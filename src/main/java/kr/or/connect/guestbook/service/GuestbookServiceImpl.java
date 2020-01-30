@@ -32,10 +32,13 @@ public class GuestbookServiceImpl implements GuestbookService {
 	@Transactional(readOnly=false)
 	public int deleteGuestbook(Long id, String ip) {
 		int deleteCount=guestbookDao.deleteById(id);
+		if(deleteCount>0) {
 		Log log=new Log();
 		log.setIp(ip);
 		log.setMethod("delete");
 		log.setRegdate(new Date());
+		logDao.insert(log);
+		}
 		return deleteCount;
 	}
 
